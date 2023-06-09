@@ -1,5 +1,19 @@
 from ursina import Entity, color, EditorCamera
 
+from typing import Type
+
+
+class Cargo(Entity):
+    def __init__(self, add_to_scene_entities=True, **kwargs):
+        super().__init__(
+            add_to_scene_entities,
+            model="low_poly_container.glb",
+            collider="box",
+            color=color.random_color(),
+            scale=0.3,
+            **kwargs
+        )
+
 
 class FerryBoat(Entity):
     def __init__(self, add_to_scene_entities=True, **kwargs):
@@ -13,20 +27,8 @@ class FerryBoat(Entity):
             for z in range(68, 115, 22)
         ]
 
-    def load(self, container: Entity, location: int):
+    def load(self, container: Type[Cargo], location: int):
         container.world_position = self._cargo_hold[location - 1]
-
-
-class Cargo(Entity):
-    def __init__(self, add_to_scene_entities=True, **kwargs):
-        super().__init__(
-            add_to_scene_entities,
-            model="low_poly_container.glb",
-            collider="box",
-            color=color.random_color(),
-            scale=0.3,
-            **kwargs
-        )
 
 
 if __name__ == "__main__":
