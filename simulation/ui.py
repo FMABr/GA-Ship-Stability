@@ -1,7 +1,7 @@
 from functools import partial
 from typing import Callable
 
-from ursina import Draggable, Button, Entity, color, window, Quad
+from ursina import Button, Draggable, Entity, Quad, color, window
 
 FIRST_COLOR = color.azure
 SECOND_COLOR = color.azure.tint(0.1)
