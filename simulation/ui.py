@@ -1,11 +1,10 @@
-from typing import Callable
-from ursina import *
 from functools import partial
+from typing import Callable
 
-app = Ursina()
+from ursina import Draggable, Button, Entity, color, window, Quad
 
 FIRST_COLOR = color.azure
-SECOND_COLOR = color.blue
+SECOND_COLOR = color.azure.tint(0.1)
 
 
 class Controls(Draggable):
