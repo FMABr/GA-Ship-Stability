@@ -51,14 +51,15 @@ class Controls(Draggable):
                 )
 
                 def click(button: Button):
+                    # First click
                     location = int(button.text)
                     button.color = SECOND_COLOR
                     button.text = str(location + 9)
                     yield location
 
+                    # Second click
                     location += 9
                     button.disabled = True
-
                     yield location
 
                 button.on_click = partial(self.__on_button_click, click(button))

@@ -20,4 +20,5 @@ Além da solução ótima, a equipe deverá pensar numa forma criativa e maravil
 
 ## Créditos
 
-- ["Low Poly Cargo Ship"](https://skfb.ly/6YrBA) by Javier_Fernandez is licensed under [Creative Commons Attribution](http://creativecommons.org/licenses/by/4.0/).
+- ["Low Poly Cargo Ship"](https://skfb.ly/6YrBA) by **Javier_Fernandez** is licensed under [Creative Commons Attribution](http://creativecommons.org/licenses/by/4.0/).
+- ["Low Poly Container"](https://skfb.ly/oGEEP) by **Designed By Jonathan** is licensed under [Creative Commons Attribution](http://creativecommons.org/licenses/by/4.0/).

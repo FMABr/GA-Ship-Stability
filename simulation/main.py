@@ -3,9 +3,6 @@ import ui
 
 app = Ursina()
 
-camera.orthographic = True
-camera.fov = 4
-camera.position = (1, 1)
-
+ui.Controls("Controles", lambda x: print(next(x)))
 
 app.run()
