@@ -16,3 +16,8 @@ Considerar que, inicialmente, os 18 contêineres estão empilhados em dois andar
 A equipe deverá apresentar a sequência ótima de carregamento visando maximizar a estabilidade (otimização mono-objetivo) da embarcação durante o processo.
 
 Além da solução ótima, a equipe deverá pensar numa forma criativa e maravilhosa de apresentar graficamente a solução.
+
+
+## Créditos
+
+- ["Low Poly Cargo Ship"](https://skfb.ly/6YrBA) by Javier_Fernandez is licensed under [Creative Commons Attribution](http://creativecommons.org/licenses/by/4.0/).

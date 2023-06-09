@@ -1,0 +1,6 @@
+# Python cache
+__pycache__
+
+# Python Environment
+.venv
+.python-version
