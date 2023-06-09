@@ -1,0 +1,1 @@
+# Implementar algoritmo genetico
