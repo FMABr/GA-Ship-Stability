@@ -1,5 +1,6 @@
 import numpy as np
 import random as rd
+from tqdm import tqdm
 # Implementar algoritmo genetico
 
 class GeneticAlgorithm():
@@ -74,3 +75,30 @@ class GeneticAlgorithm():
       return self.population[index_chromo_1]
     
     return self.population[index_chromo_2]
+
+
+def get_best_chromo():
+    best_chromos = []
+
+    ag = GeneticAlgorithm()
+    ag.generate_evaluations()
+    for _ in tqdm(range(ag.number_of_generations), total = ag.number_of_generations):
+        new_population = []
+        while len(new_population) < ag.population_size:
+            d_chromo = ag.select_chromo()
+            m_chromo = ag.select_chromo()
+
+            new_chromo_1, new_chromo_2 = ag.crossover(m_chromo, d_chromo)
+
+            ag.mutation(new_chromo_1)
+            ag.mutation(new_chromo_2)
+
+            new_population.append(new_chromo_1)
+            new_population.append(new_chromo_2)
+        ag.population = new_population[:]
+        ag.generate_evaluations()
+
+        current_best_chromo = min(list(zip(ag.population,ag.evaluations)),key=lambda x: x[-1])
+        best_chromos.append(current_best_chromo)
+    
+    return best_chromos[-1]
