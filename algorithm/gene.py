@@ -12,7 +12,7 @@ class GeneticAlgorithm():
   population = []
   evaluations = []
 
-  def __init__(self, population_size = 50, number_of_generations = 100, gene_number = 18, mutation_rate = 0.5, crossover_rate = 0.8):
+  def __init__(self, population_size = 50, number_of_generations = 100, gene_number = 18, mutation_rate = 0.05, crossover_rate = 0.8):
     self.population_size = population_size
     self.number_of_generations = number_of_generations
     self.mutation_rate = mutation_rate
@@ -20,14 +20,14 @@ class GeneticAlgorithm():
     self.gene_number = gene_number
     self.generate_population()
 
-  def generate_gene(self):
+  def generate_chromosome(self):
     result = np.random.randint(0, self.gene_number - 1, self.gene_number).tolist()
     return result
 
   def generate_population(self):
     self.population = []
     for i in range(self.population_size):
-      self.population.append(self.generate_gene())
+      self.population.append(self.generate_chromosome())
   
   def crossover(self, m_chromo, d_chromo):
     if (rd.random() < self.crossover_rate):
@@ -102,3 +102,6 @@ def get_best_chromo():
         best_chromos.append(current_best_chromo)
     
     return best_chromos[-1]
+  
+if __name__ == "__main__":
+  print()
