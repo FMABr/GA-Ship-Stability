@@ -11,6 +11,8 @@ class GeneticAlgorithm():
   gene_number = 18
   population = []
   evaluations = []
+  
+  
 
   def __init__(self, population_size = 50, number_of_generations = 100, gene_number = 18, mutation_rate = 0.05, crossover_rate = 0.8):
     self.population_size = population_size
@@ -21,7 +23,7 @@ class GeneticAlgorithm():
     self.generate_population()
 
   def generate_chromosome(self):
-    result = np.random.randint(0, self.gene_number - 1, self.gene_number).tolist()
+    result = np.random.randint(0, 100, self.gene_number).tolist()
     return result
 
   def generate_population(self):
@@ -42,9 +44,9 @@ class GeneticAlgorithm():
   def mutation(self, chromo):
     for i in range(len(chromo)):
       if (rd.random() < self.mutation_rate):
-        chromo[i] = rd.randint(0, self.gene_number - 1)
+        chromo[i] = rd.randint(0, 100)
 
-  def generate_evaluations(self):
+  def generate_fitness(self):
     self.evaluations = []
     for chromo in self.population:
       chromo_repeats = 0
@@ -60,9 +62,26 @@ class GeneticAlgorithm():
           self.objective_function(chromo)
       )
 
-  def objective_function(self, chromo):
-    result = rd.random()
+  def rearrange_chromo_by_priority(self, chromo):
+    new_chromo = chromo[:]
+    positions = range(18)
+    
+    dtype = [('priority', int), ('position', int)]
+    result = np.sort(zip(new_chromo, positions), dtype=dtype, order='position')
     return result
+
+  def objective_function(self, chromo):
+    current_cm = 0
+    total_displacement = 0
+    
+    rearranged_chromo = self.rearrange_chromo_by_priority(chromo)
+    
+    ship = np.matrix([[0,0,0], [0,0,0], [0,0,0]])
+    
+    for _, current_position in rearranged_chromo:
+      print()
+    
+    return total_displacement
 
   def select_chromo(self):
     index_chromo_1 = rd.randint(0, self.population_size - 1)
@@ -81,7 +100,7 @@ def get_best_chromo():
     best_chromos = []
 
     ag = GeneticAlgorithm()
-    ag.generate_evaluations()
+    ag.generate_fitness()
     for _ in tqdm(range(ag.number_of_generations), total = ag.number_of_generations):
         new_population = []
         while len(new_population) < ag.population_size:
@@ -96,7 +115,7 @@ def get_best_chromo():
             new_population.append(new_chromo_1)
             new_population.append(new_chromo_2)
         ag.population = new_population[:]
-        ag.generate_evaluations()
+        ag.generate_fitness()
 
         current_best_chromo = min(list(zip(ag.population,ag.evaluations)),key=lambda x: x[-1])
         best_chromos.append(current_best_chromo)
@@ -104,4 +123,8 @@ def get_best_chromo():
     return best_chromos[-1]
   
 if __name__ == "__main__":
-  print()
+  ag = GeneticAlgorithm()
+  ag.generate_fitness()
+  
+  temp_chromo = ag.population[0]
+  print(ag.rearrange_chromo_by_priority(temp_chromo))
