@@ -4,15 +4,8 @@ from tqdm import tqdm
 # Implementar algoritmo genetico
 
 class GeneticAlgorithm():
-  population_size = 50
-  number_of_generations = 100
-  mutation_rate = 0.5
-  crossover_rate = 0.95
-  gene_number = 18
   population = []
   evaluations = []
-  
-  
 
   def __init__(self, population_size = 50, number_of_generations = 100, gene_number = 18, mutation_rate = 0.05, crossover_rate = 0.8):
     self.population_size = population_size
@@ -68,6 +61,7 @@ class GeneticAlgorithm():
     
     dtype = [('priority', int), ('position', int)]
     result = np.sort(zip(new_chromo, positions), dtype=dtype, order='position')
+    result = [x[-1] for x in result]
     return result
 
   def objective_function(self, chromo):
