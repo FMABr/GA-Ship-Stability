@@ -3,8 +3,6 @@ import random as rd
 import numpy as np
 from tqdm import tqdm
 
-# Implementar algoritmo genetico
-
 
 class GeneticAlgorithm:
     population = []
