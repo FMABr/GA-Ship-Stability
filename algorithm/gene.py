@@ -1,13 +1,26 @@
 import numpy as np
 import random as rd
+import math
 from tqdm import tqdm
 # Implementar algoritmo genetico
+
+COORDS_CONTAINER = {
+  '0': [-1, 1],
+  '1': [0, 1],
+  '2': [1, 1],
+  '3': [-1, 0],
+  '4': [0, 0],
+  '5': [1, 0],
+  '6': [-1, -1],
+  '7': [0, -1],
+  '8': [1, -1],
+}
 
 class GeneticAlgorithm():
   population = []
   evaluations = []
 
-  def __init__(self, population_size = 50, number_of_generations = 100, gene_number = 18, mutation_rate = 0.05, crossover_rate = 0.8):
+  def __init__(self, population_size = 100, number_of_generations = 100, gene_number = 18, mutation_rate = 0.05, crossover_rate = 0.8):
     self.population_size = population_size
     self.number_of_generations = number_of_generations
     self.mutation_rate = mutation_rate
@@ -41,16 +54,7 @@ class GeneticAlgorithm():
 
   def generate_fitness(self):
     self.evaluations = []
-    for chromo in self.population:
-      chromo_repeats = 0
-      for i in range(self.gene_number):
-        if (chromo.count(i) > 1):
-          chromo_repeats += 1
-      
-      if (chromo_repeats):
-        self.evaluations.append(1000 * chromo_repeats)
-        continue
-      
+    for chromo in self.population:      
       self.evaluations.append(
           self.objective_function(chromo)
       )
@@ -60,21 +64,55 @@ class GeneticAlgorithm():
     positions = range(18)
     
     dtype = [('priority', int), ('position', int)]
-    result = np.sort(zip(new_chromo, positions), dtype=dtype, order='position')
+    array_from_np = np.array(list(zip(new_chromo, positions)), dtype=dtype)
+    result = np.sort(array_from_np, order='priority')[::-1]
     result = [x[-1] for x in result]
     return result
+  
+  def position_of_container_in_ship(self, a_position):
+    normalized_position = a_position % 9
+    row = normalized_position // 3
+    column = normalized_position % 3
+    return [row, column]
+  
+  def multiply_vector_by_number(self, a_vector, a_number):
+    new_vector = np.array(a_vector) * a_number
+    return list(new_vector)
+  
+  def calculate_cm(self, a_matrix):
+    result = [0,0]
+    for i in range(9):
+      row, column = self.position_of_container_in_ship(i)
+      number_of_container = a_matrix[row, column]
+      pos = COORDS_CONTAINER[str(i)][:]
+      current_coords = self.multiply_vector_by_number(pos, number_of_container)
+      result = np.sum([result, current_coords], axis=0).tolist()
+    return result
+  
+  def magnitude(self, vector):
+    return math.sqrt(sum(pow(element, 2) for element in vector))
 
   def objective_function(self, chromo):
-    current_cm = 0
+    current_cm = [0,0]
     total_displacement = 0
     
     rearranged_chromo = self.rearrange_chromo_by_priority(chromo)
     
     ship = np.matrix([[0,0,0], [0,0,0], [0,0,0]])
     
-    for _, current_position in rearranged_chromo:
-      print()
-    
+    for current_position in rearranged_chromo:
+      row, column = self.position_of_container_in_ship(current_position)
+      ship[row, column] += 1
+      if (ship[row, column] > 2):
+        return 100000
+      
+      temp_cm = self.calculate_cm(ship)
+      current_cm = [
+        current_cm[0] - temp_cm[0],
+        current_cm[1] - temp_cm[1],
+      ]
+      total_displacement += self.magnitude(current_cm)
+            
     return total_displacement
 
   def select_chromo(self):
@@ -112,13 +150,11 @@ def get_best_chromo():
         ag.generate_fitness()
 
         current_best_chromo = min(list(zip(ag.population,ag.evaluations)),key=lambda x: x[-1])
-        best_chromos.append(current_best_chromo)
+        best_chromos.append(ag.rearrange_chromo_by_priority(current_best_chromo[0]))
     
+    print(current_best_chromo)
     return best_chromos[-1]
   
 if __name__ == "__main__":
-  ag = GeneticAlgorithm()
-  ag.generate_fitness()
-  
-  temp_chromo = ag.population[0]
-  print(ag.rearrange_chromo_by_priority(temp_chromo))
+  result = get_best_chromo()
+  print(result)
